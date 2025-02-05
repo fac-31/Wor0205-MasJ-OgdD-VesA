@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+
 app.use((req, res, next) => {
 	console.log(`Request: ${req.method} ${req.url}`);
 	next();
@@ -16,9 +18,16 @@ app.get("/about", (req, res) => {
 app.get("/about-jaz", (req, res) => {
 	res.sendFile(__dirname + "/public/about-jaz.html");
 });
+
+app.get("/annas-page", (req, res) => {
+	res.sendFile(__dirname + "/public/annas-page.html");
+});
+
 app.get('/storytime', (req, res) => {
     res.sendFile(__dirname + '/public/storytime.html');
 });
+
 app.listen(PORT, () => {
 	console.log(`Server is running on http://localhost:${PORT}`);
 });
+

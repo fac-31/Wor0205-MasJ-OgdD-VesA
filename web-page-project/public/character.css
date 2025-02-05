@@ -1,0 +1,104 @@
+*,*::after, *::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    margin: 6em 0;
+    font-size: 1.8rem;
+    color: white;
+    display: flex;
+    justify-content: center;
+    font-family: "Hanuman", serif;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.5)), url("./images/photo-1535905557558-afc4877a26fc.avif");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-blend-mode: darken;
+    line-height: 1.5;
+}
+
+
+img {
+    width: 100%;
+    box-shadow: 0px 0px 10px 10px rgba(252, 250, 250, 0.4);
+    border-radius: 5px;
+}
+
+h1, h2, h3 {
+    margin: 0;
+    padding: 0;
+}
+
+.article_h2 {
+    margin: 2em 0 0.5em 0;
+}
+
+a {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.header {
+    text-align: center;
+}
+
+.container {
+    max-width: 800px;
+}
+
+
+.author_img {
+    max-width: 300px; 
+    float: right;
+    margin: 0 0 1em 1em;
+        
+}
+
+.character_img {
+    margin: 2em 0 1em 0;
+}
+
+.list-wrapper {
+    background-color: rgb(255, 255, 255, 0.8);
+    border-radius: 5px;
+    padding: 2em 2em;  
+    margin: 2em 0;
+    max-width: 800px;
+}
+
+.list-colour {
+    color: brown;
+}
+
+.footer {
+    margin-top: 4em;
+    text-align: center;
+}
+
+.footer_ul {
+    list-style-type: none;
+}
+
+.grid {
+    display: grid;
+    margin: 2em 0 4em 0;
+   justify-content: center;
+    grid-gap: 2em;
+    grid-template-columns: repeat(auto-fit, 360px);
+}
+
+.grid img {
+    height: 300px;
+}
+
+.adds_heading {
+    text-align: center;
+    margin-top: 4em;
+}
