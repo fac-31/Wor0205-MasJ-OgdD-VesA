@@ -20,5 +20,8 @@
   "homepage": "https://github.com/fac-31/Wor0205-MasJ-OgdD-VesA#readme",
   "dependencies": {
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }

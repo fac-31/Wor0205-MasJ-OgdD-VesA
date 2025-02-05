@@ -13,6 +13,9 @@ app.get('/', (req, res) => {
 app.get('/about', (req, res) => {
 	res.sendFile(__dirname + '/public/about.html');
 });
+app.get('/storytime', (req, res) => {
+    res.sendFile(__dirname + '/public/storytime.html');
+});
 app.listen(PORT, () => {
 	console.log(`Server is running on http://localhost:${PORT}`);
 });
