@@ -13,4 +13,7 @@ router.get('/storytime', (req, res) => {
     res.sendFile(__dirname + '/public/storytime.html');
 });
 
+router.get("/annas-page", (req, res) => {
+	res.sendFile(__dirname + "/public/annas-page.html");
+});
 module.exports = router

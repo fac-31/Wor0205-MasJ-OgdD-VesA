@@ -14,9 +14,6 @@ app.get('/api/hello', (req, res) => {
     res.json({ message: 'Hello, world!' });
 });
 
-app.get("/annas-page", (req, res) => {
-	res.sendFile(__dirname + "/public/annas-page.html");
-});
 
 app.get('/api/goodbye', (req, res) => {
     res.json({ message: 'Goodbye cruel world!' });
