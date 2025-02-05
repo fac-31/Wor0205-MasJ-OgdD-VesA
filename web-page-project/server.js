@@ -1,17 +1,20 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use((req, res, next) => {
-    console.log(`Request: ${req.method} ${req.url}`);
-    next();
+	console.log(`Request: ${req.method} ${req.url}`);
+	next();
 });
-app.use(express.static('public'));
+app.use(express.static("public"));
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
+app.get("/", (req, res) => {
+	res.sendFile(__dirname + "/public/index.html");
 });
-app.get('/about', (req, res) => {
-	res.sendFile(__dirname + '/public/about.html');
+app.get("/about", (req, res) => {
+	res.sendFile(__dirname + "/public/about.html");
+});
+app.get("/about-jaz", (req, res) => {
+	res.sendFile(__dirname + "/public/about-jaz.html");
 });
 app.get('/storytime', (req, res) => {
     res.sendFile(__dirname + '/public/storytime.html');
