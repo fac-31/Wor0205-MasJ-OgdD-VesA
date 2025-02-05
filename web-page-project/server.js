@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
-const browserSync = require('browser-sync');
+
 
 app.use((req, res, next) => {
 	console.log(`Request: ${req.method} ${req.url}`);
@@ -23,17 +23,11 @@ app.get("/annas-page", (req, res) => {
 	res.sendFile(__dirname + "/public/annas-page.html");
 });
 
-app.get("/about/:name", (req, res) => {
-	const user = req.params.name;
-	res.sendFile(__dirname + `/public/about-${user}.html`);
+app.get('/storytime', (req, res) => {
+    res.sendFile(__dirname + '/public/storytime.html');
 });
 
 app.listen(PORT, () => {
 	console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-browserSync.init({
-	proxy: http://localhost:${PORT},
-	files: ['public/*/.*'], 
-	reloadDelay: 50,
-  });
