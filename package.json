@@ -19,7 +19,10 @@
   },
   "homepage": "https://github.com/fac-31/Wor0205-MasJ-OgdD-VesA#readme",
   "dependencies": {
-    "express": "^4.21.2"
+    "browser-sync": "^3.0.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
