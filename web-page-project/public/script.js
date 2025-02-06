@@ -62,18 +62,18 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	function createHtml() {
-        const weatherDiv = document.getElementById("weatherData")
+		const weatherDiv = document.getElementById("weatherData");
 		return weatherCall(lat, lng).then((data) => {
 			weatherDiv.innerHTML = `
             <h2>Weather Info</h2>
-            <p><strong>Country:</strong> ${data.sys.country}</p>
-            <p><strong>Latitude:</strong> ${data.coord.lat}</p>
-            <p><strong>Longitude:</strong> ${data.coord.lon}</p>
-            <p><strong>Max Temp:</strong> ${data.main.temp_max}°C</p>
-            <p><strong>Min Temp:</strong> ${data.main.temp_min}°C</p>
-            <p><strong>Current Temp:</strong> ${data.main.temp}°C</p>
-            <p><strong>Weather:</strong> ${data.weather[0].description}</p>
-        `
+            <p><strong>Country:</strong> <span>${data.sys.country}</span></p>
+            <p><strong>Latitude:</strong> <span>${data.coord.lat}</span></p>
+            <p><strong>Longitude:</strong> <span>${data.coord.lon}</span></p>
+            <p><strong>Max Temp:</strong> <span>${Math.floor(data.main.temp_max - 272.15)}°C</span></p>
+            <p><strong>Min Temp:</strong> <span>${Math.floor(data.main.temp_min - 272.15)}°C</span></p>
+            <p><strong>Current Temp:</strong> <span>${Math.floor(data.main.temp - 272.15)}°C</span></p>
+            <p><strong>Weather:</strong> <span>${data.weather[0].description}</span></p>
+        `;
 		});
 	}
 
