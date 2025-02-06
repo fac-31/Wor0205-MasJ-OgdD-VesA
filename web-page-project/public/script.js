@@ -62,8 +62,18 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	function createHtml() {
-		weatherCall(lat, lng).then((res) => {
-			console.log(res);
+        const weatherDiv = document.getElementById("weatherData")
+		return weatherCall(lat, lng).then((data) => {
+			weatherDiv.innerHTML = `
+            <h2>Weather Info</h2>
+            <p><strong>Country:</strong> ${data.sys.country}</p>
+            <p><strong>Latitude:</strong> ${data.coord.lat}</p>
+            <p><strong>Longitude:</strong> ${data.coord.lon}</p>
+            <p><strong>Max Temp:</strong> ${data.main.temp_max}°C</p>
+            <p><strong>Min Temp:</strong> ${data.main.temp_min}°C</p>
+            <p><strong>Current Temp:</strong> ${data.main.temp}°C</p>
+            <p><strong>Weather:</strong> ${data.weather[0].description}</p>
+        `
 		});
 	}
 
