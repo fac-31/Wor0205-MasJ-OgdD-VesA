@@ -19,17 +19,18 @@ app.get("/form", (req, res) => {
 	res.sendFile(__dirname + "/public/form.html");
 });
 const users = [];
-app.post("/add-user", (req, res) => {
 
-	const { name, age } = req.body;
-	
+app.post("/add-user/:name", (req, res) => {
+    
+	const { name, age, country } = req.body;
+	console.log(req.body)
 	if (!name || !age) {
 	  return res.status(400).json({ message: "Both name and age are required!" });
 	}
 
 
   
-	const newUser = { id: users.length + 1, name, age };
+	const newUser = { id: users.length + 1, name, age, country };
 	users.push(newUser);
   
 	res.status(201).json({ message: "User added!", user: newUser });
