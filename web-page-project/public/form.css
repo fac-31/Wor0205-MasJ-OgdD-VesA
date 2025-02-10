@@ -7,8 +7,14 @@ body {
 	gap: 20px;
 }
 
+.home-button {
+	text-decoration: none;
+	text-align: left;
+}
+
 .container,
 .weather-data {
+	width: 100%;
 	max-width: 400px;
 	margin: 0 auto;
 	background: white;
@@ -17,32 +23,41 @@ body {
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.user-list {
+	padding: 0;
+}
 
-input, select, button {
+.user-list li {
+	list-style: none;
+	text-align: center;
+	padding: 0;
+}
+
+.hidden {
+	display: none;
+}
+
+input,
+select,
+button {
 	width: 100%;
 	padding: 10px;
 	margin: 10px 0;
 	border-radius: 5px;
 	border: 1px solid #ccc;
 	box-sizing: border-box;
-  }
-  
-  button {
+}
+
+button {
 	background-color: #007bff;
 	color: white;
 	cursor: pointer;
-  }
-  
-  button:hover {
+}
+
+button:hover {
 	background-color: #0056b3;
-  }
-  
-  @media (max-width: 480px) {
-	.container {
-	  max-width: 90%;
-	  padding: 15px;
-	}
-  }
-  .user-countries {
+}
+
+.user-countries {
 	text-decoration: none;
-  }
+}
