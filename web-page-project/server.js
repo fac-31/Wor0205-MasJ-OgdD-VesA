@@ -19,17 +19,22 @@ app.get("/form", (req, res) => {
 	res.sendFile(__dirname + "/public/form.html");
 });
 const users = [];
+// \/:name?
 app.post("/add-user", (req, res) => {
-
-	const { name, age } = req.body;
-	
+    
+	const { name, age, country, flag } = req.body;
+	console.log(req.body)
 	if (!name || !age) {
 	  return res.status(400).json({ message: "Both name and age are required!" });
 	}
 
+	const userExists = users.some(user => user.name.toLowerCase() === name.toLowerCase() )
+	if (userExists) {
+        return res.status(400).json({ message: "User already exists!" });
+    }
 
   
-	const newUser = { id: users.length + 1, name, age };
+	const newUser = { id: users.length + 1, name, age, country, flag };
 	users.push(newUser);
   
 	res.status(201).json({ message: "User added!", user: newUser });
