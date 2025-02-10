@@ -4,10 +4,13 @@ let apiData = {};
 let name;
 let age;
 let country;
+let flag
+
 
 //for selected user
 const userList = document.getElementById("userList");
 let userCountry;
+let userName;
 let lat;
 let lng;
 let weather;
@@ -30,6 +33,24 @@ document.addEventListener("DOMContentLoaded", function () {
 			});
 		return countries;
 	}
+  
+  // Makes api call and creates `apiData` object
+  async function getCountries() {
+    let countries = await fetch("https://restcountries.com/v3.1/all?fields=name,latlng,flags")
+    .then((response) => response.json())
+    .then((data) => {
+      return data.map((val) => {
+        
+        apiData[val.name.common] = {
+          "name" : val.name.common,
+          "latlng" : val.latlng, 
+          'flag': val.flags.png
+         
+        }
+      })
+    });
+  return countries
+}
 
 	// Populates drop down with list o
 	async function createList() {
@@ -74,6 +95,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
 			this.reset();
 		});
+//event listener for user input form
+//stores user input in variables (variables are sent to `/add-user` in server.js)
+//calls `loadUsers()` when `/add-user` data is fetched 
+document
+.getElementById("userForm")
+.addEventListener("submit", async function (e) {
+  e.preventDefault();
+  
+  name = document.getElementById("name").value;
+  age = document.getElementById("age").value;
+  country = document.getElementById("countries").value;
+  flag = apiData[country].flag
+  
+  const response = await fetch("/add-user", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, age, country }),
+  });
+  
+  const data = await response.json();
+  console.log("Once or twice?")
+  if (response.ok) {
+    loadUsers();  
+  } else {
+    alert(data.message);
+  }
+  
+  this.reset();
+});
 
 	//fetches user data from 'users` route
 	// AND displays data in HTML element
@@ -110,6 +160,43 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	//makes api call to get weather info for users country
+//fetches user data from 'users` route
+// AND displays data in HTML element  
+async function loadUsers() {
+  const response = await fetch("/users");
+  const users = await response.json();
+  console.log(users);
+  
+  userList.innerHTML = "";
+  
+  users.forEach((user) => {
+    const ul = document.createElement("ul");
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    
+    a.textContent = `${user.name} (Age: ${user.age}) ${user.country}`;
+    a.href = "#";
+    a.id = user.country;
+    a.setAttribute("name", user.name)
+    a.className = "user-countries"
+    let country;
+    
+    li.appendChild(a);
+    ul.appendChild(li);
+    userList.appendChild(ul);
+	});
+  };
+  
+  //sets country variable to selected users country
+  userList.addEventListener("click", setCountry)
+  function setCountry(event) {
+    event.preventDefault();
+    userCountry = event.target.id;
+    userName = event.target.name;
+    createHtml();
+  }
+  
+  //makes api call to get weather info for users country
 	function weatherCall(lat, lng) {
 		let apiKey = "881a29970d23ca3dc651cab604f1690a";
 
@@ -126,11 +213,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	//Uses api data to display the weather for the users chosen country
 	function createHtml() {
+
+    lat = apiData[userCountry].latlng[0];
+    lng = apiData[userCountry].latlng[1];
+   
+    let flagUrl = apiData[userCountry].flag;
+    console.log(flagUrl)
+    
 		lat = apiData[userCountry].latlng[0];
 		lng = apiData[userCountry].latlng[1];
 
-		let flagUrl = apiData[userCountry].flag;
-		console.log(flagUrl);
+
 
 		const weatherDiv = document.getElementById("weatherData");
 
@@ -138,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			weatherDiv.classList.remove("hidden");
 			weatherDiv.innerHTML = `
       <h2>Weather Info</h2>
-      <p><strong>User:</strong> <span>${name}</span></p>
+      <p><strong id="user-p">Hello </strong></p>
       <p><strong>Country:</strong> <span>${data.sys.country}</span></p>
       <p><img src="${flagUrl}" alt="Flag of ${userCountry}" style="width:100px; height:auto;"/></p>
       <p><strong>Latitude:</strong> <span>${data.coord.lat}</span></p>
@@ -148,6 +241,8 @@ document.addEventListener("DOMContentLoaded", function () {
       <p><strong>Current Temp:</strong> <span>${Math.floor(data.main.temp - 272.15)}°C</span></p>
       <p><strong>Weather:</strong> <span>${data.weather[0].description}</span></p>
       `;
+      let par = document.getElementById("user-p");
+      par.textContent += userName + "!";
 		});
 	}
 

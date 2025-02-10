@@ -56,8 +56,16 @@ button {
 
 button:hover {
 	background-color: #0056b3;
-}
+  }
+  
+  @media (max-width: 480px) {
+	.container {
+	  max-width: 90%;
+	  padding: 15px;
+	}
 
-.user-countries {
+  .user-countries {
 	text-decoration: none;
+	color: black;
+	
 }
