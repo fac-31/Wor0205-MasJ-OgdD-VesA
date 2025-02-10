@@ -1,3 +1,4 @@
+
 let apiData = {};
 
 //variables for form input
@@ -17,22 +18,6 @@ let weather;
 
 //function to load script
 document.addEventListener("DOMContentLoaded", function () {
-	// Makes api call and creates `apiData` object
-	async function getCountries() {
-		let countries = await fetch(
-			"https://restcountries.com/v3.1/all?fields=name,latlng,flag"
-		)
-			.then((response) => response.json())
-			.then((data) => {
-				return data.map((val) => {
-					apiData[val.name.common] = {
-						name: val.name.common,
-						latlng: val.latlng,
-					};
-				});
-			});
-		return countries;
-	}
   
   // Makes api call and creates `apiData` object
   async function getCountries() {
@@ -52,49 +37,21 @@ document.addEventListener("DOMContentLoaded", function () {
   return countries
 }
 
-	// Populates drop down with list o
-	async function createList() {
-		console.log("create list");
-		//allows you to select existing users
-		loadUsers();
+// Populates drop down with list o
+async function createList(){
+  console.log("create list")
+  //allows you to select existing users 
+	loadUsers();
+  
+  await getCountries();
+  let list = document.getElementById("countries");
+  for (const [key, value] of Object.entries(apiData)) {
+    let opt = document.createElement("option");
+    opt.value = opt.textContent = value.name
+    list.appendChild(opt)
+  }
+}; 
 
-		await getCountries();
-		let list = document.getElementById("countries");
-		for (const [key, value] of Object.entries(apiData)) {
-			let opt = document.createElement("option");
-			opt.value = opt.textContent = value.name;
-			list.appendChild(opt);
-		}
-	}
-
-	//event listener for user input form
-	//stores user input in variables (variables are sent to `/add-user` in server.js)
-	//calls `loadUsers()` when `/add-user` data is fetched
-	document
-		.getElementById("userForm")
-		.addEventListener("submit", async function (e) {
-			e.preventDefault();
-
-			name = document.getElementById("name").value;
-			age = document.getElementById("age").value;
-			country = document.getElementById("countries").value;
-
-			const response = await fetch("/add-user", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ name, age, country }),
-			});
-
-			const data = await response.json();
-			console.log("Once or twice?");
-			if (response.ok) {
-				loadUsers();
-			} else {
-				alert(data.message);
-			}
-
-			this.reset();
-		});
 //event listener for user input form
 //stores user input in variables (variables are sent to `/add-user` in server.js)
 //calls `loadUsers()` when `/add-user` data is fetched 
@@ -125,41 +82,6 @@ document
   this.reset();
 });
 
-	//fetches user data from 'users` route
-	// AND displays data in HTML element
-	async function loadUsers() {
-		const response = await fetch("/users");
-		const users = await response.json();
-		console.log(users);
-
-		userList.innerHTML = "";
-
-		users.forEach((user) => {
-			const ul = document.createElement("ul");
-			const li = document.createElement("li");
-			const a = document.createElement("a");
-
-			a.textContent = `${user.name} (Age: ${user.age}) ${user.country}`;
-			a.href = "#";
-			a.id = user.country;
-			a.className = "user-countries";
-			let country;
-
-			li.appendChild(a);
-			userList.appendChild(li);
-		});
-	}
-
-	//sets country variable to selected users country
-	userList.addEventListener("click", setCountry);
-	function setCountry(event) {
-		event.preventDefault();
-		userCountry = event.target.id;
-
-		createHtml();
-	}
-
-	//makes api call to get weather info for users country
 //fetches user data from 'users` route
 // AND displays data in HTML element  
 async function loadUsers() {
@@ -198,20 +120,21 @@ async function loadUsers() {
   
   //makes api call to get weather info for users country
 	function weatherCall(lat, lng) {
-		let apiKey = "881a29970d23ca3dc651cab604f1690a";
-
+    let apiKey = "881a29970d23ca3dc651cab604f1690a";
+    
 		var WAPI = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${apiKey}`;
-
+    
 		const response = fetch(WAPI)
-			.then((response) => response.json())
-			.then((data) => {
-				weather = data;
-				return weather;
-			});
+    .then((response) => response.json())
+    .then((data) => {
+      weather = data;
+      return weather;
+    });
 		return response;
 	}
-
-	//Uses api data to display the weather for the users chosen country
+  
+  
+  //Uses api data to display the weather for the users chosen country
 	function createHtml() {
 
     lat = apiData[userCountry].latlng[0];
@@ -220,16 +143,12 @@ async function loadUsers() {
     let flagUrl = apiData[userCountry].flag;
     console.log(flagUrl)
     
-		lat = apiData[userCountry].latlng[0];
-		lng = apiData[userCountry].latlng[1];
-
-
-
 		const weatherDiv = document.getElementById("weatherData");
-
+    
 		return weatherCall(lat, lng).then((data) => {
-			weatherDiv.classList.remove("hidden");
-			weatherDiv.innerHTML = `
+
+weatherDiv.classList.remove("hidden");
+      weatherDiv.innerHTML =  `
       <h2>Weather Info</h2>
       <p><strong id="user-p">Hello </strong></p>
       <p><strong>Country:</strong> <span>${data.sys.country}</span></p>
@@ -245,6 +164,8 @@ async function loadUsers() {
       par.textContent += userName + "!";
 		});
 	}
+  
 
-	createList();
-});
+  createList();
+})
+

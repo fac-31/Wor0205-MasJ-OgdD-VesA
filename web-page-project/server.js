@@ -72,4 +72,3 @@ browserSync.init({
 	files: ['public/*/.*'], 
 	reloadDelay: 50,
   });
-
