@@ -1,6 +1,17 @@
+
+const response = await fetch("/add-user", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ name, age, country }),
+});
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
 	loadUsers();
 
+  //event listener for user input form
+  //stores user input in variables
 	document
 		.getElementById("userForm")
 		.addEventListener("submit", async function (e) {
@@ -10,11 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const age = document.getElementById("age").value;
       const country = document.getElementById("countries").value;
 // Jason said this should not be within the form event listener. Move to another file with associated var?
-      const response = await fetch("/add-user", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, age, country }),
-      });
+
 
       const data = await response.json();
 
