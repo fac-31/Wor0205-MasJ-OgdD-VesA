@@ -4,6 +4,7 @@ let apiData = {};
 let name;
 let age;
 let country;
+let flag
 
 
 //for selected user
@@ -19,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
   // Makes api call and creates `apiData` object
   async function getCountries() {
-    let countries = await fetch("https://restcountries.com/v3.1/all?fields=name,latlng,flag")
+    let countries = await fetch("https://restcountries.com/v3.1/all?fields=name,latlng,flags")
     .then((response) => response.json())
     .then((data) => {
       return data.map((val) => {
@@ -27,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
         apiData[val.name.common] = {
           "name" : val.name.common,
           "latlng" : val.latlng, 
+          'flag': val.flags.png
          
         }
       })
@@ -60,6 +62,7 @@ document
   name = document.getElementById("name").value;
   age = document.getElementById("age").value;
   country = document.getElementById("countries").value;
+  flag = apiData[country].flag
   
   const response = await fetch("/add-user", {
     method: "POST",
@@ -135,7 +138,7 @@ async function loadUsers() {
 
     lat = apiData[userCountry].latlng[0];
     lng = apiData[userCountry].latlng[1];
-    
+   
     let flagUrl = apiData[userCountry].flag;
     console.log(flagUrl)
     
