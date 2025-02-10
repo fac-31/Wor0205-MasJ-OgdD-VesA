@@ -43,6 +43,11 @@ input, select, button {
 	  padding: 15px;
 	}
   }
+  li {
+	list-style-type: none;
+  }
   .user-countries {
 	text-decoration: none;
+	color: black;
+	
   }

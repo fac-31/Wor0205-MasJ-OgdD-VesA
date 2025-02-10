@@ -8,7 +8,8 @@ let country;
 
 //for selected user
 const userList = document.getElementById("userList");
-let userCountry; 
+let userCountry;
+let userName;
 let lat;
 let lng;
 let weather;
@@ -94,6 +95,7 @@ async function loadUsers() {
     a.textContent = `${user.name} (Age: ${user.age}) ${user.country}`;
     a.href = "#";
     a.id = user.country;
+    a.setAttribute("name", user.name)
     a.className = "user-countries"
     let country;
     
@@ -108,7 +110,7 @@ async function loadUsers() {
   function setCountry(event) {
     event.preventDefault();
     userCountry = event.target.id;
-    
+    userName = event.target.name;
     createHtml();
   }
   
@@ -142,7 +144,7 @@ async function loadUsers() {
 		return weatherCall(lat, lng).then((data) => {
       weatherDiv.innerHTML =  `
       <h2>Weather Info</h2>
-      <p><strong>User:</strong> <span>${name}</span></p>
+      <p><strong id="user-p">Hello </strong></p>
       <p><strong>Country:</strong> <span>${data.sys.country}</span></p>
       <p><img src="${flagUrl}" alt="Flag of ${userCountry}" style="width:100px; height:auto;"/></p>
       <p><strong>Latitude:</strong> <span>${data.coord.lat}</span></p>
@@ -152,6 +154,8 @@ async function loadUsers() {
       <p><strong>Current Temp:</strong> <span>${Math.floor(data.main.temp - 272.15)}°C</span></p>
       <p><strong>Weather:</strong> <span>${data.weather[0].description}</span></p>
       `;
+      let par = document.getElementById("user-p");
+      par.textContent += userName + "!";
 		});
 	}
   
