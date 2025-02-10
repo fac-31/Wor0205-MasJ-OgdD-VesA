@@ -19,8 +19,8 @@ app.get("/form", (req, res) => {
 	res.sendFile(__dirname + "/public/form.html");
 });
 const users = [];
-
-app.post("/add-user/:name", (req, res) => {
+// \/:name?
+app.post("/add-user", (req, res) => {
     
 	const { name, age, country } = req.body;
 	console.log(req.body)
