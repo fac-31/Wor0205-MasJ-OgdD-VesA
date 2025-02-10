@@ -20,9 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const name = document.getElementById("name").value;
       const age = document.getElementById("age").value;
       const country = document.getElementById("countries").value;
-// Jason said this should not be within the form event listener. Move to another file with associated var?
+      // Jason said this should not be within the form event listener. Move to another file with associated var?
 
-
+      
       const data = await response.json();
 
       if (response.ok) {
@@ -35,6 +35,9 @@ document.addEventListener("DOMContentLoaded", function () {
       this.reset();
   });
 
+
+  //fetches user data from 'users` route
+  // AND displays data in HTML element  
 	async function loadUsers() {
 		const response = await fetch("/users");
 		const users = await response.json();
@@ -46,31 +49,32 @@ document.addEventListener("DOMContentLoaded", function () {
 			userList.appendChild(li);
 		});
 	}
-// Move get countries to its own file. Then export it - modules.export etc. 
-  async function getCountries() {
-    let countries = await fetch("https://restcountries.com/v3.1/all?fields=name,latlng")
-    .then((response) => response.json())
-    .then((data) => {
-        return data
-    });
-    return countries
-  }
-// Move createList function to its own file. Import / require getcountries module. Probs don't need latlng setAttr?
-  async function createList(){
-    let data = await getCountries();
-    let list = document.getElementById("countries");
-        data.map((val) => {
-            let opt = document.createElement("option")
-            opt.setAttribute("latlng", val.latlng)
-            opt.value = val.name.common
-            opt.textContent = val.name.common
-            list.appendChild(opt)
-        });
-  };
-  // Leave create list here. Import create list to use in dom content loaded.
- createList()
 
-	//WEATHER MAP CALL
+
+// Move get countries to its own file. Then export it - modules.export etc. 
+async function getCountries() {
+  let countries = await fetch("https://restcountries.com/v3.1/all?fields=name,latlng")
+  .then((response) => response.json())
+  .then((data) => {
+      return data
+  });
+  return countries
+}
+// Move createList function to its own file. Import / require getcountries module. Probs don't need latlng setAttr?
+async function createList(){
+  let data = await getCountries();
+  let list = document.getElementById("countries");
+      data.map((val) => {
+          let opt = document.createElement("option")
+          opt.setAttribute("latlng", val.latlng)
+          opt.value = val.name.common
+          opt.textContent = val.name.common
+          list.appendChild(opt)
+      });
+};
+// Leave create list here. Import create list to use in dom content loaded.
+createList()
+	//WEATHER MAP CALLhttp://localhost:3000
 
 	let lat = 33.44;
 	let lng = -94.04;
@@ -90,7 +94,9 @@ document.addEventListener("DOMContentLoaded", function () {
 			});
 		return response;
 	}
-
+  
+  
+  
 	function createHtml() {
 		const weatherDiv = document.getElementById("weatherData");
 		return weatherCall(lat, lng).then((data) => {
@@ -106,6 +112,9 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
 		});
 	}
+
+  //5a Jaz --> event listener for HTML list click
+
 
 	createHtml();
 });
