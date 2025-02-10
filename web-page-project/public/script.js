@@ -1,67 +1,85 @@
 
-const response = await fetch("/add-user", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ name, age, country }),
-});
-
 
 
 document.addEventListener("DOMContentLoaded", function () {
+  
+  
+
+  //does this function need to be called here? 
 	loadUsers();
 
   //event listener for user input form
-  //stores user input in variables
+  //stores user input in variables (variables are sent to `/add-user` in server.js)
+  //calls `loadUsers()` when `/add-user` data is fetched 
 	document
 		.getElementById("userForm")
 		.addEventListener("submit", async function (e) {
 			e.preventDefault();
 
+
+
       const name = document.getElementById("name").value;
-      const age = document.getElementById("age").value;
-      const country = document.getElementById("countries").value;
-      // Jason said this should not be within the form event listener. Move to another file with associated var?
+const age = document.getElementById("age").value;
+const country = document.getElementById("countries").value;
+    const response = await fetch("/add-user", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, age, country }),
+    });
 
-      
-      const data = await response.json();
+    const data = await response.json();
 
-      if (response.ok) {
-          loadUsers();  
-      } else {
-          alert(data.message);
-      }
+    if (response.ok) {
+        loadUsers();  
+    } else {
+        alert(data.message);
+    }
 
-      
-      this.reset();
+    this.reset();
   });
 
-
+  
   //fetches user data from 'users` route
   // AND displays data in HTML element  
 	async function loadUsers() {
 		const response = await fetch("/users");
 		const users = await response.json();
 		const userList = document.getElementById("userList");
+    
 		userList.innerHTML = "";
-		users.forEach((user) => {
+		users.forEach((user, index) => {
+      const ul = document.createElement("ul");
 			const li = document.createElement("li");
-			li.textContent = `${user.name} (Age: ${user.age}) ${user.country}`;
-			userList.appendChild(li);
+      const a = document.createElement("a");
+
+			a.textContent = `${user.name} (Age: ${user.age}) ${user.country}`;
+      a.href = "#"
+      a.id = `userLink:${index}`
+
+      li.appendChild(a);
+      ul.appendChild(li);
+      userList.appendChild(ul);
 		});
-	}
 
 
 // Move get countries to its own file. Then export it - modules.export etc. 
+let apiData = {};
 async function getCountries() {
   let countries = await fetch("https://restcountries.com/v3.1/all?fields=name,latlng")
   .then((response) => response.json())
   .then((data) => {
+    data.map((val) => {
+      apiData[val.name] = {
+      "name" : val.name,
+      "latlng" : val.latlng
+      }
+    })
       return data
   });
   return countries
 }
 // Move createList function to its own file. Import / require getcountries module. Probs don't need latlng setAttr?
-async function createList(){
+ async function createList(){
   let data = await getCountries();
   let list = document.getElementById("countries");
       data.map((val) => {
@@ -71,9 +89,10 @@ async function createList(){
           opt.textContent = val.name.common
           list.appendChild(opt)
       });
-};
-// Leave create list here. Import create list to use in dom content loaded.
-createList()
+}; 
+// Leave createList.js list here. Import createList.js list to use in dom content loaded.
+createList();
+console.log(await apiData)
 	//WEATHER MAP CALLhttp://localhost:3000
 
 	let lat = 33.44;
@@ -113,11 +132,13 @@ createList()
 		});
 	}
 
-  //5a Jaz --> event listener for HTML list click
-
 
 	createHtml();
-});
+};
+})
+
+
+
 
 //{
 //    country: data.sys.country,
