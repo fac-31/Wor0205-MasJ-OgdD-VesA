@@ -1,3 +1,4 @@
+
 let apiData = {};
 
 //variables for form input
@@ -145,6 +146,8 @@ async function loadUsers() {
 		const weatherDiv = document.getElementById("weatherData");
     
 		return weatherCall(lat, lng).then((data) => {
+
+weatherDiv.classList.remove("hidden");
       weatherDiv.innerHTML =  `
       <h2>Weather Info</h2>
       <p><strong id="user-p">Hello </strong></p>
@@ -165,3 +168,4 @@ async function loadUsers() {
 
   createList();
 })
+
