@@ -1,3 +1,4 @@
+const { getFacts } = require('./public/api-1-data') 
 const express = require("express");
 const app = express();
 
@@ -7,11 +8,19 @@ const routes = require("./routes")
 
 const PORT = process.env.PORT || 3000;
 
+const dotenv = require('dotenv').config();
+
+const cors = require('cors');
+
+const OpenAi = require('openai')
+
 app.use(express.json());
 
+app.use(cors());
 
-
-
+const country_facts = new OpenAi({
+	apiKey: process.env.API_KEY
+});
 //Form
 // Middleware to parse JSON data from requests
 
@@ -59,7 +68,18 @@ app.get('/api/hello', (req, res) => {
 app.get('/api/goodbye', (req, res) => {
     res.json({ message: 'Goodbye cruel world!' });
 });
+// openai;
 
+app.post("/api/country-facts", async (req, res) => {
+		let jsonObject = req.body
+		let name = jsonObject.name;
+		let age = jsonObject.age;
+		let country = jsonObject.country;
+		console.log("making open ai call")
+		const openaiRes = await getFacts(country_facts, name, age, country);
+		res.send(openaiRes)
+		console.log("complete")
+});
 
 
 app.listen(PORT, () => {

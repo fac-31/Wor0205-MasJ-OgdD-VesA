@@ -110,11 +110,12 @@ async function loadUsers() {
   
   //sets country variable to selected users country
   userList.addEventListener("click", setCountry)
-  function setCountry(event) {
+  async function setCountry(event) {
     event.preventDefault();
     userCountry = event.target.id;
     userName = event.target.name;
     createHtml();
+    await aiChat()
   }
   
   //makes api call to get weather info for users country
@@ -161,7 +162,19 @@ async function loadUsers() {
       par.textContent += userName + "!";
 		});
 	}
-  
+  async function aiChat() {
+    console.log("posting info to /countryfacts")
+    await fetch("/api/country-facts", {
+      method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({name, age, country})
+    })
+    .then((res) => res.text())
+    .then((text) => {
+      let factsDiv = document.getElementById("countryFacts");
+      factsDiv.textContent = text
+    })
+  }
 
   createList();
 })
