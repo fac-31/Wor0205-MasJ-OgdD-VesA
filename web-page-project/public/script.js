@@ -115,7 +115,6 @@ async function loadUsers() {
     userCountry = event.target.id;
     userName = event.target.name;
     createHtml();
-    await aiChat()
   }
   
   //makes api call to get weather info for users country
@@ -162,8 +161,13 @@ async function loadUsers() {
       par.textContent += userName + "!";
 		});
 	}
-  async function aiChat() {
-    console.log("posting info to /countryfacts")
+  userList.addEventListener("click", async function (event) {
+    userCountry = event.target.id;
+    userName = event.target.name;
+    await aiChat(userName, userCountry);
+  })
+  async function aiChat(name, country) {
+    console.log("posting info to /countryfacts", userName, country)
     await fetch("/api/country-facts", {
       method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -172,7 +176,8 @@ async function loadUsers() {
     .then((res) => res.text())
     .then((text) => {
       let factsDiv = document.getElementById("countryFacts");
-      factsDiv.textContent = text
+      let aiObject = JSON.parse(text)
+      factsDiv.textContent = aiObject;
     })
   }
 

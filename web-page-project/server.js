@@ -1,5 +1,7 @@
-const { getFacts } = require('./public/api-1-data') 
+const { getFacts } = require('./public/api-1-data');
+
 const express = require("express");
+
 const app = express();
 
 const browserSync = require('browser-sync');
